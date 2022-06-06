@@ -1,0 +1,16 @@
+.datePicker {
+    fieldset {
+        border-color: #ffffff;
+        &:hover {
+            cursor: pointer;
+            border-color: #ffffff !important;
+        }
+    }
+}
+.MuiOutlinedInput-root {
+    &:hover {
+        .MuiOutlinedInput-notchedOutline {
+            border-color: #ffffff !important;
+        }
+    }
+}
