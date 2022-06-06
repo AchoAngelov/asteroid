@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
@@ -139,18 +139,22 @@ export default function EnhancedTable() {
 
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [rows] = useState(
-        asteroids.map((asteroid) =>
-            createData(
-                asteroid.id,
-                asteroid.name,
-                asteroid.estimated_diameter.kilometers.estimated_diameter_max,
-                asteroid.estimated_diameter.kilometers.estimated_diameter_min,
-                'View'
+    const [rows, setRows] = useState([]);
+    useEffect(() => {
+        setRows(
+            asteroids.map((asteroid) =>
+                createData(
+                    asteroid.id,
+                    asteroid.name,
+                    asteroid.estimated_diameter.kilometers
+                        .estimated_diameter_max,
+                    asteroid.estimated_diameter.kilometers
+                        .estimated_diameter_min,
+                    'View'
+                )
             )
-        )
-    );
-
+        );
+    }, [asteroids]);
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
@@ -167,7 +171,12 @@ export default function EnhancedTable() {
     };
 
     const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+        page > 0
+            ? Math.max(
+                  0,
+                  (1 + page) * rowsPerPage - rows.length ? rows.length : 0
+              )
+            : 0;
 
     return (
         <Box sx={{ width: '100%', p: 0 }}>
@@ -182,7 +191,7 @@ export default function EnhancedTable() {
                             order={order}
                             orderBy={orderBy}
                             onRequestSort={handleRequestSort}
-                            rowCount={rows.length}
+                            rowCount={rows.length ? rows.length : 0}
                         />
                         <TableBody>
                             {stableSort(rows, getComparator(order, orderBy))
@@ -226,7 +235,7 @@ export default function EnhancedTable() {
                 <TablePagination
                     rowsPerPageOptions={[10, 25, 50]}
                     component="div"
-                    count={rows.length}
+                    count={rows.length ? rows.length : 0}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onPageChange={handleChangePage}

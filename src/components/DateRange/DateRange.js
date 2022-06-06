@@ -39,6 +39,7 @@ function DateRange() {
         } finally {
             setLoading(false);
         }
+        console.log(asteroidsCtx.asteroids);
     };
     return (
         <Grid container spacing={3}>
