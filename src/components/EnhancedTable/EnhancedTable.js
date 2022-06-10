@@ -9,10 +9,9 @@ import { useHistory } from 'react-router-dom';
 import EnhancedTableHead from './EnhancedTableHead/EnhancedTableHead';
 import EnhancedTableBody from './EnhancedTableBody/EnhancedTableBody';
 
-export default function EnhancedTable({ headCells, rows }, props) {
+export default function EnhancedTable({ headCells, rows, rowsHandler }, props) {
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('calories');
-    const history = useHistory();
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -35,9 +34,7 @@ export default function EnhancedTable({ headCells, rows }, props) {
         page > 0
             ? Math.max(0, (1 + page) * rowsPerPage - rows.length ? 0 : 0)
             : 0;
-    const navigateToAsteroid = (id) => {
-        history.push(`/asteroid/${id}`);
-    };
+
     return (
         <Box sx={{ width: '100%', p: 0 }}>
             <Paper className={styles.enhancedTable} sx={{ width: '100%' }}>
@@ -56,7 +53,7 @@ export default function EnhancedTable({ headCells, rows }, props) {
                         />
                         <EnhancedTableBody
                             page={page}
-                            rowHandler={navigateToAsteroid}
+                            rowHandler={rowsHandler}
                             emptyRows={emptyRows}
                             rowsPerPage={rowsPerPage}
                             order={order}

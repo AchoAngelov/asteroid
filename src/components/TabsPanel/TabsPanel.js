@@ -11,6 +11,7 @@ import EnhancedTable from '../EnhancedTable/EnhancedTable';
 import { useAsteroidContext } from '../../context/asteroidsContext';
 import AsteroidChart from '../AsteroidChart/AsteroidChart';
 import { createRowData, round } from '../../common/common';
+import { useHistory } from 'react-router-dom';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -52,11 +53,15 @@ export default function TabsPanel(props) {
     const [value, setValue] = React.useState(0);
     const { asteroids } = useAsteroidContext();
     const [rows, setRows] = React.useState([]);
+    const history = useHistory();
+
     const innerRef = React.useRef();
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
-
+    const navigateToAsteroid = (id) => {
+        history.push(`/asteroid/${id}`);
+    };
     React.useEffect(() => {
         setRows(
             asteroids.map((asteroid) =>
@@ -125,7 +130,11 @@ export default function TabsPanel(props) {
 
             <div ref={innerRef}>
                 <TabPanel value={value} index={0} dir={theme.direction}>
-                    <EnhancedTable rows={rows} headCells={headCells} />
+                    <EnhancedTable
+                        rowsHandler={navigateToAsteroid}
+                        rows={rows}
+                        headCells={headCells}
+                    />
                 </TabPanel>
                 <TabPanel value={value} index={1} dir={theme.direction}>
                     <AsteroidChart innerRef={innerRef} />

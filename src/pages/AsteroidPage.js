@@ -86,7 +86,11 @@ export default function AsteroidPage() {
                 </Toolbar>
             </AppBar>
             <Grid item xs={12}>
-                <EnhancedTable rows={asteroid} headCells={headCells} />
+                <EnhancedTable
+                    rowsHandler={() => {}}
+                    rows={asteroid}
+                    headCells={headCells}
+                />
             </Grid>
         </Box>
     ) : (
