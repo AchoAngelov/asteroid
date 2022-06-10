@@ -31,7 +31,7 @@ export default function AsteroidPage() {
             id: 1,
             numeric: false,
             disablePadding: false,
-            label: 'Distance (km)',
+            label: 'Distance To Earth (km)',
         },
     ];
     const getAsteroidData = useCallback(async () => {
@@ -44,7 +44,7 @@ export default function AsteroidPage() {
                 const dataArray = response.data.close_approach_data.map(
                     (data) => {
                         return [
-                            data.close_approach_date,
+                            data.close_approach_date_full,
                             round(data.miss_distance.kilometers),
                         ];
                     }
