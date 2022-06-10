@@ -85,7 +85,7 @@ export default function AsteroidPage() {
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <Grid xs={12}>
+            <Grid item xs={12}>
                 <EnhancedTable rows={asteroid} headCells={headCells} />
             </Grid>
         </Box>
