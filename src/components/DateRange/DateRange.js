@@ -32,10 +32,13 @@ function DateRange() {
             setLoading(true);
             const response = await getClosestAsteroids(data);
             const keys = Object.keys(response.data.near_earth_objects);
+
             const asteroids = keys.map(
                 (key) => response.data.near_earth_objects[key]
             );
-            asteroidsCtx.setAsteroids(...asteroids);
+            asteroidsCtx.setAsteroids(
+                Array.prototype.concat.apply([], asteroids)
+            );
         } catch (err) {
             setError(
                 err.response.data.error_message
@@ -47,6 +50,7 @@ function DateRange() {
             setLoading(false);
         }
     };
+
     function getDatesInRange() {
         const date = startDate.setDate() + 7;
 
