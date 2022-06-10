@@ -1,19 +1,21 @@
 import { useState } from 'react';
 import moment from 'moment';
 import Grid from '@mui/material/Grid';
+import { Alert } from '@mui/material';
 import { getClosestAsteroids } from '../../services/asteroidsService';
 import DatePicker from '../DatePicker/DatePicker';
 import { LoadingButton } from '@mui/lab';
 import { useAsteroidContext } from '../../context/asteroidsContext';
+import styles from './DateRange.module.scss';
+import FlashMessage from '../FlashMessage/FlashMessage';
+import { ERROR } from '../../common/constants';
+
 function DateRange() {
     const asteroidsCtx = useAsteroidContext();
     const [loading, setLoading] = useState(false);
-    const [startDate, setStartDate] = useState(
-        moment(new Date()).format('YYYY-MM-DD')
-    );
-    const [endDate, setEndDate] = useState(
-        moment(new Date()).format('YYYY-MM-DD')
-    );
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState();
+    const [error, setError] = useState();
     const getStartDate = (date) => {
         setStartDate(moment(date).format('YYYY-MM-DD'));
     };
@@ -35,41 +37,71 @@ function DateRange() {
             );
             asteroidsCtx.setAsteroids(...asteroids);
         } catch (err) {
+            setError(
+                err.response.data.error_message
+                    ? err.response.data.error_message
+                    : err.response.data.error.message
+            );
             throw new Error(err);
         } finally {
             setLoading(false);
         }
-        console.log(asteroidsCtx.asteroids);
     };
+    function getDatesInRange() {
+        const date = startDate.setDate() + 7;
+
+        return date.set;
+    }
     return (
-        <Grid container spacing={3}>
-            <Grid item xs={6} md={4} sx={{ mx: 'auto' }}>
-                <DatePicker
-                    value={startDate}
-                    getDate={getStartDate}
-                    label={'Start Date'}
-                />
-            </Grid>
-            <Grid item xs={6} md={4} sx={{ mx: 'auto' }}>
-                <DatePicker getDate={getEndDate} label={'End Date'} />
-            </Grid>
-            <Grid
-                item
-                xs={8}
-                md={3}
-                sx={{ mx: 'auto', alignItems: 'center', display: 'flex' }}
-            >
-                <LoadingButton
-                    loading={loading}
-                    loadingPosition="center"
-                    fullWidth
-                    variant="contained"
-                    onClick={getAsteroids}
+        <>
+            <Grid className={styles.dateRange} container>
+                <Grid
+                    item
+                    md={12}
+                    sx={{ pb: 2, mx: 'auto', textAlign: 'right' }}
                 >
-                    Get Asteroids
-                </LoadingButton>
+                    <DatePicker
+                        value={startDate}
+                        getDate={getStartDate}
+                        label={'From'}
+                    />
+                </Grid>
+                <Grid
+                    item
+                    md={12}
+                    sx={{ pb: 2, mx: 'auto', textAlign: 'right' }}
+                >
+                    <DatePicker
+                        shouldDisableDate={getDatesInRange}
+                        value={endDate <= startDate ? startDate : endDate}
+                        getDate={getEndDate}
+                        label={'To'}
+                    />
+                </Grid>
+                <Grid
+                    item
+                    xs={12}
+                    md={12}
+                    sx={{
+                        ml: 'auto',
+                        alignItems: 'right',
+                        display: 'flex',
+                        pl: 0,
+                    }}
+                >
+                    <LoadingButton
+                        loading={loading}
+                        loadingPosition="center"
+                        variant="contained"
+                        fullWidth
+                        onClick={getAsteroids}
+                    >
+                        Check for asteroids
+                    </LoadingButton>
+                </Grid>
             </Grid>
-        </Grid>
+            {error && <FlashMessage status={ERROR} message={error} />}
+        </>
     );
 }
 

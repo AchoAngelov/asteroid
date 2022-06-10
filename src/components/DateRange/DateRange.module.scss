@@ -1,0 +1,8 @@
+.dateRange {
+    max-width: 270px;
+    padding: 15px;
+    background-color: #00000073;
+    @media screen and (max-width: 600px) {
+        margin: auto;
+    }
+}

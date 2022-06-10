@@ -1,16 +1,8 @@
 .datePicker {
     fieldset {
-        border-color: #ffffff;
-        &:hover {
-            cursor: pointer;
-            border-color: #ffffff !important;
-        }
+        border-color: rgb(220, 212, 212) !important;
     }
-}
-.MuiOutlinedInput-root {
-    &:hover {
-        .MuiOutlinedInput-notchedOutline {
-            border-color: #ffffff !important;
-        }
+    label {
+        color: rgb(220, 212, 212) !important;
     }
 }

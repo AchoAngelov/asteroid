@@ -1,0 +1,19 @@
+.searchForAsteroids {
+    padding: 20px;
+    display: flex;
+    background-image: linear-gradient(
+            to bottom,
+            rgba(28, 28, 29, 0.9),
+            rgba(15, 14, 15, 0.9)
+        ),
+        url('../../../public/images/bg.jpg');
+    height: unquote('-webkit-calc(100vh - 400px)');
+    h4 {
+        color: rgb(220, 212, 212);
+        @media screen and (min-width: 900px) {
+            align-self: center;
+            font-size: 30px;
+            text-align: center;
+        }
+    }
+}

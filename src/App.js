@@ -1,14 +1,12 @@
-import './App.css';
+import './App.scss';
 import Layout from './layout/Layout';
-import TabsPanel from './components/TabsPanel/TabsPanel';
-import Header from './components/Header/Header';
 import { AsteroidsProvider } from './context/asteroidsContext';
+import AppRouter from './AppRouter';
 function App() {
     return (
         <AsteroidsProvider>
             <Layout>
-                <Header />
-                <TabsPanel label={['Asteroids Table', 'Chart View']} />
+                <AppRouter />
             </Layout>
         </AsteroidsProvider>
     );

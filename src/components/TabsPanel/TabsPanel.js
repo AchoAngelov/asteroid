@@ -1,6 +1,5 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import SwipeableViews from 'react-swipeable-views';
 import { useTheme } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Tabs from '@mui/material/Tabs';
@@ -10,6 +9,8 @@ import Box from '@mui/material/Box';
 import styles from './TabsPanel.module.scss';
 import EnhancedTable from '../EnhancedTable/EnhancedTable';
 import { useAsteroidContext } from '../../context/asteroidsContext';
+import AsteroidChart from '../AsteroidChart/AsteroidChart';
+import { createRowData, round } from '../../common/common';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -50,44 +51,86 @@ export default function TabsPanel(props) {
     const theme = useTheme();
     const [value, setValue] = React.useState(0);
     const { asteroids } = useAsteroidContext();
+    const [rows, setRows] = React.useState([]);
+    const innerRef = React.useRef();
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
-    const handleChangeIndex = (index) => {
-        setValue(index);
-    };
 
+    React.useEffect(() => {
+        setRows(
+            asteroids.map((asteroid) =>
+                createRowData([
+                    asteroid.id,
+                    asteroid.name,
+                    round(
+                        asteroid.estimated_diameter.meters
+                            .estimated_diameter_max,
+                        0.1
+                    ),
+                    round(
+                        asteroid.estimated_diameter.meters
+                            .estimated_diameter_min,
+                        0.1
+                    ),
+                ])
+            )
+        );
+    }, [asteroids]);
+    const headCells = [
+        {
+            id: 0,
+            numeric: false,
+            disablePadding: true,
+            label: 'ID',
+        },
+        {
+            id: 1,
+            numeric: false,
+            disablePadding: false,
+            label: 'Name',
+        },
+        {
+            id: 2,
+            numeric: false,
+            disablePadding: false,
+            label: 'Max diameter (meters)',
+        },
+        {
+            id: 3,
+            numeric: false,
+            disablePadding: false,
+            label: 'Min diameter (meters)',
+        },
+    ];
     return (
-        <Box className={styles.tabsPanel} sx={{ bgcolor: 'background.paper' }}>
+        <Box className={styles.tabsPanel} sx={{ p: 0 }}>
             <AppBar position="static">
-                {asteroids && (
-                    <Tabs
-                        value={value}
-                        onChange={handleChange}
-                        indicatorColor="secondary"
-                        textColor="inherit"
-                        variant="fullWidth"
-                        aria-label="full width tabs example"
-                    >
-                        <Tab label={props.label[0]} {...tabProps(0)} />
-                        <Tab label={props.label[1]} {...tabProps(1)} />
-                    </Tabs>
-                )}
-            </AppBar>
-            {asteroids && (
-                <SwipeableViews
-                    axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-                    index={value}
-                    onChangeIndex={handleChangeIndex}
+                <Tabs
+                    value={value}
+                    onChange={handleChange}
+                    indicatorColor="secondary"
+                    textColor="inherit"
+                    variant="fullWidth"
+                    aria-label="full width tabs example"
                 >
-                    <TabPanel value={value} index={0} dir={theme.direction}>
-                        <EnhancedTable />
-                    </TabPanel>
-                    <TabPanel value={value} index={1} dir={theme.direction}>
-                        Item Two
-                    </TabPanel>
-                </SwipeableViews>
-            )}
+                    {asteroids && (
+                        <Tab label={props.label[0]} {...tabProps(0)} />
+                    )}
+                    {asteroids && (
+                        <Tab label={props.label[1]} {...tabProps(1)} />
+                    )}
+                </Tabs>
+            </AppBar>
+
+            <div ref={innerRef}>
+                <TabPanel value={value} index={0} dir={theme.direction}>
+                    <EnhancedTable rows={rows} headCells={headCells} />
+                </TabPanel>
+                <TabPanel value={value} index={1} dir={theme.direction}>
+                    <AsteroidChart innerRef={innerRef} />
+                </TabPanel>
+            </div>
         </Box>
     );
 }

@@ -9,7 +9,11 @@
             rgba(15, 14, 15, 0.4)
         ),
         url('../../../public/images/asteroidsBG.webp');
+
     @media screen and (max-width: 600px) {
         padding: 30px;
+        div {
+            margin: auto;
+        }
     }
 }

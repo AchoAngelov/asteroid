@@ -5,7 +5,8 @@ body {
         'Helvetica Neue', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background: rgb(239, 240, 241);
+    background-attachment: fixed;
+    background-color: #000000e0 !important;
 }
 
 code {

@@ -1,0 +1,16 @@
+.enhancedTable {
+    background-color: transparent !important;
+    th,
+    td,
+    div,
+    p,
+    svg,
+    span {
+        color: rgb(220, 212, 212) !important;
+    }
+    tbody {
+        tr {
+            cursor: pointer;
+        }
+    }
+}

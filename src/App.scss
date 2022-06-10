@@ -1,0 +1,13 @@
+.bubble-chart {
+    transform: scale(0.9);
+    .label-text {
+        opacity: 1 !important;
+    }
+    .value-text {
+        display: none;
+    }
+}
+
+.MuiTableCell-root {
+    color: rgb(220, 212, 212);
+}
