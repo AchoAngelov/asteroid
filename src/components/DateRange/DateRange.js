@@ -1,21 +1,19 @@
 import { useState } from 'react';
 import moment from 'moment';
 import Grid from '@mui/material/Grid';
-import { Alert } from '@mui/material';
 import { getClosestAsteroids } from '../../services/asteroidsService';
 import DatePicker from '../DatePicker/DatePicker';
 import { LoadingButton } from '@mui/lab';
 import { useAsteroidContext } from '../../context/asteroidsContext';
 import styles from './DateRange.module.scss';
-import FlashMessage from '../FlashMessage/FlashMessage';
-import { ERROR } from '../../common/constants';
+import { useSnackbar } from 'notistack';
 
 function DateRange() {
     const asteroidsCtx = useAsteroidContext();
     const [loading, setLoading] = useState(false);
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState();
-    const [error, setError] = useState();
+    const { enqueueSnackbar } = useSnackbar();
     const getStartDate = (date) => {
         setStartDate(moment(date).format('YYYY-MM-DD'));
     };
@@ -40,10 +38,11 @@ function DateRange() {
                 Array.prototype.concat.apply([], asteroids)
             );
         } catch (err) {
-            setError(
+            enqueueSnackbar(
                 err.response.data.error_message
                     ? err.response.data.error_message
-                    : err.response.data.error.message
+                    : err.response.data.error.message,
+                { variant: 'error' }
             );
             throw new Error(err);
         } finally {
@@ -104,7 +103,6 @@ function DateRange() {
                     </LoadingButton>
                 </Grid>
             </Grid>
-            {error && <FlashMessage status={ERROR} message={error} />}
         </>
     );
 }

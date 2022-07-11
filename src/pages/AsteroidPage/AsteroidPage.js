@@ -8,10 +8,10 @@ import {
 } from '@mui/material';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { createRowData, round } from '../common/common';
-import EnhancedTable from '../components/EnhancedTable/EnhancedTable';
+import { createRowData, round } from '../../common/common';
+import EnhancedTable from '../../components/EnhancedTable/EnhancedTable';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { getAsteroid } from '../services/asteroidsService';
+import { getAsteroid } from '../../services/asteroidsService';
 import styles from './AsteroidPage.module.scss';
 import { Link } from 'react-router-dom';
 
