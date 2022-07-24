@@ -1,9 +1,16 @@
+.MuiBox-root {
+    width: 100%;
+    .MuiToolbar-root {
+        margin-left: auto;
+    }
+}
 .bubble-chart {
     transform: scale(0.9);
     .label-text {
         opacity: 1 !important;
     }
-    .value-text {
+    .value-text,
+    .label-text {
         display: none;
     }
 }
